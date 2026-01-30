@@ -32,4 +32,4 @@ Live demo (if deployed): https://your-streamlit-app-url.streamlit.app
 ## Technical Roadmap
 (See docs/technical_roadmap.md)
 
-Questions? Contact: peter.omondi@gmail.com
+Questions? Contact: omondipeterb03@gmail.com
