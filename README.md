@@ -42,6 +42,11 @@ It uses LSTM-based forecasting and anomaly detection on time-series load data to
 - Deploy to Streamlit Cloud
 
 ## Technical Roadmap
-See [docs/technical_roadmap.md](docs/technical_roadmap.md)
+See [docs/technical-roadmap.md](docs/technical-roadmap.md)
 
 Contact: peteromondi03@gmail.com
+
+## Progress – February 25, 2026
+- Fixed technical-roadmap.md path (no more 404)
+- Milestone 1 deliverables almost complete
+- Preparing to add dataset loader next
