@@ -50,3 +50,9 @@ Contact: peteromondi03@gmail.com
 - Fixed technical-roadmap.md path (no more 404)
 - Milestone 1 deliverables almost complete
 - Preparing to add dataset loader next
+
+## Progress – February 27, 2026
+- Added sample grid CSV to data/ folder
+- Updated app.py to load real data
+- Preparing attack injection and anomaly detection next
+- Mentor meeting feedback incorporated
