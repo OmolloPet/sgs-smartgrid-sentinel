@@ -60,4 +60,6 @@ Contact: peteromondi03@gmail.com
 ## Progress – February 28, 2026
 - Uploaded sample smart grid CSV to data/ folder
 - Updated app.py to auto-load repo CSV or uploaded file
-- Preparing attack injection and anomaly detection next
+- Added attack injection buttons to app.py (spike, drop, noise)
+- Dashboard now simulates cyber attacks
+- Next: anomaly detection alerts
