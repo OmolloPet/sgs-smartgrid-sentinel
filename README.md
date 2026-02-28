@@ -56,3 +56,8 @@ Contact: peteromondi03@gmail.com
 - Updated app.py to load real data
 - Preparing attack injection and anomaly detection next
 - Mentor meeting feedback incorporated
+
+## Progress – February 28, 2026
+- Uploaded sample smart grid CSV to data/ folder
+- Updated app.py to auto-load repo CSV or uploaded file
+- Preparing attack injection and anomaly detection next
