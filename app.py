@@ -20,4 +20,14 @@ if uploaded_file is not None:
     else:
         st.warning("CSV has only one column – add more data for plotting.")
 else:
-    st.info("Upload a CSV file to see data and basic visualization.")
+    st.info("Upload a CSV file to see data and basic visualization."
+
+# Try to load sample CSV from repo if no upload
+try:
+    df_sample = pd.read_csv("data/smart_grid_load.csv")  # change to your exact CSV name
+    st.write("Sample dataset loaded from repo:")
+    st.write(df_sample.head())
+    if len(df_sample.columns) > 1:
+        st.line_chart(df_sample.iloc[:, 1])
+except:
+    st.info("Sample CSV not found yet – upload your own")
