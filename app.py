@@ -2,29 +2,18 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-# ──────────────────────────────────────────────
-# Title & Intro
-# ──────────────────────────────────────────────
 st.set_page_config(page_title="SGS MVP", layout="wide")
 st.title("SmartGrid Sentinel (SGS) MVP")
 st.markdown("**NIRU AI Hackathon 2026** – AI-Driven Predictive Cybersecurity for Kenya's Power Grid")
 
-st.info("""
-Proposal accepted Dec 25, 2025  
-MVP in development – Day 3 (anomaly detection added)
-""")
+st.info("Proposal accepted Dec 25, 2025 – MVP in development")
 
-# ──────────────────────────────────────────────
-# Data Loading Section
-# ──────────────────────────────────────────────
-st.subheader("1. Load Grid Data")
-
-# Your exact CSV name from repo (CHANGE THIS if needed)
-SAMPLE_CSV_PATH = "data/smart_grid_real_time_load_monitoring.csv"  # ← EDIT THIS
+# Path to your sample CSV – CHANGE THIS to your exact file name
+SAMPLE_CSV_PATH = "data/smart_grid_real_time_load_monitoring.csv"  # ← CHANGE TO YOUR EXACT FILE NAME
 
 df = None
 
-# Checkbox for sample
+# Load sample from repo if checked
 use_sample = st.checkbox("Load sample dataset from repo (if available)", value=False)
 
 if use_sample:
@@ -50,7 +39,7 @@ if uploaded_file is not None:
 # Show Data & Plot
 # ──────────────────────────────────────────────
 if df is not None:
-    st.subheader("2. Data Preview & Visualization")
+    st.subheader("Data Preview & Visualization")
 
     # Preview
     st.write("First 5 rows:")
@@ -62,37 +51,17 @@ if df is not None:
         st.error("No numeric columns found in CSV. Check your data.")
     else:
         selected_col = st.selectbox("Select column to plot", numeric_cols, index=0)
+        original_data = df[selected_col].copy()  # Keep original
 
-        # Original data copy
-        original_data = df[selected_col].copy()
-
-        # Plot container
+        # Plot area
         plot_container = st.empty()
 
-        # Initial plot (normal)
-        plot_container.line_chart(original_data, use_container_width=True)
-        st.caption(f"Normal {selected_col} over time")
-
-        # Anomaly detection (simple threshold)
-        mean = original_data.mean()
-        std = original_data.std()
-        threshold_high = mean + 3 * std
-        threshold_low = mean - 3 * std
-
-        anomalies = (original_data > threshold_high) | (original_data < threshold_low)
-        num_anomalies = anomalies.sum()
-
-        if num_anomalies > 0:
-            st.error(f"⚠️ {num_anomalies} anomalies detected in normal data (outside 3σ)")
-        else:
-            st.success("No anomalies in normal data")
-
         # Attack buttons
-        st.subheader("3. Simulate Cyber Attack")
+        st.subheader("Simulate Cyber Attack")
         col1, col2, col3 = st.columns(3)
 
-        modified_data = original_data.copy()
         attack_triggered = False
+        modified_data = original_data.copy()
 
         if col1.button("Inject Spike"):
             spike_start = np.random.randint(0, len(modified_data)-50)
@@ -112,29 +81,34 @@ if df is not None:
             attack_triggered = True
             st.warning("Noise attack injected!")
 
-        # Re-plot if attack triggered
-        if attack_triggered:
-            # Re-detect anomalies on modified data
-            modified_anomalies = (modified_data > threshold_high) | (modified_data < threshold_low)
-            modified_num = modified_anomalies.sum()
+        # Anomaly detection (simple threshold on original data)
+        mean = original_data.mean()
+        std = original_data.std()
+        threshold_high = mean + 3 * std
+        threshold_low = mean - 3 * std
 
-            # Plot with red for anomalies
-            plot_data = modified_data.copy()
-            plot_data[\~modified_anomalies] = np.nan  # hide normal points
-            plot_container.line_chart(plot_data, color="#FF0000", use_container_width=True)
-            st.caption(f"Attack injected – anomalies in red ({modified_num} points)")
+        # Detect on current data (modified or original)
+        anomalies = (modified_data > threshold_high) | (modified_data < threshold_low)
+        num_anomalies = anomalies.sum()
 
-            if modified_num > 0:
-                st.error(f"⚠️ ATTACK DETECTED! {modified_num} anomalous points")
-            else:
-                st.warning("Attack injected but not detected above threshold")
+        # Plot with red for anomalies
+        plot_data = modified_data.copy()
+        plot_data[\~anomalies] = np.nan  # Hide normal points (keep only anomalies)
+        color = "#FF0000" if num_anomalies > 0 else "#1f77b4"
+        plot_container.line_chart(plot_data, color=color, use_container_width=True)
+        st.caption(f"Plot of {selected_col} – red = anomalies ({num_anomalies} points)")
+
+        # Alert message
+        if num_anomalies > 0:
+            st.error(f"⚠️ ANOMALY DETECTED! {num_anomalies} points outside normal range (3σ)")
+        elif attack_triggered:
+            st.warning("Attack injected but no anomaly detected above threshold")
         else:
-            # Reset to normal plot
-            plot_container.line_chart(original_data, use_container_width=True)
+            st.success("Normal operation – no anomalies detected")
 
         # Reset button
         if st.button("Reset to Normal Data"):
             modified_data = original_data.copy()
-            plot_container.line_chart(original_data, use_container_width=True)
+            plot_container.line_chart(original_data, color="#1f77b4", use_container_width=True)
 else:
     st.info("Upload a CSV file or check 'Use sample dataset' to begin.")
