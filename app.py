@@ -95,7 +95,7 @@ if df is not None:
 
         # Plot: show only anomalies in red, normal in blue
         plot_data = modified_data.copy()
-        plot_data[\ ~anomalies] = np.nan  # Hide normal points (keep only anomalies in red)
+        plot_data[~anomalies] = np.nan  # Hide normal points (keep only anomalies in red)
 
         plot_color = "#FF0000" if num_anomalies > 0 else "#1f77b4"
         st.line_chart(plot_data, color=plot_color, use_container_width=True)
