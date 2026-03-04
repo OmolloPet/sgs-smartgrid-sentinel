@@ -11,9 +11,9 @@ st.markdown("**NIRU AI Hackathon 2026** – AI-Driven Predictive Cybersecurity f
 st.info("Proposal accepted Dec 25, 2025 – MVP in development (Day 3)")
 
 # ──────────────────────────────────────────────
-# SAMPLE CSV PATH – data/smart_grid_real_time_load_monitoring.csv
+# SAMPLE CSV PATH – data/smart_grid_dataset.csv
 # ──────────────────────────────────────────────
-SAMPLE_CSV_PATH = "data/smart_grid_real_time_load_monitoring.csv"  # ← EDIT THIS LINE
+SAMPLE_CSV_PATH = "data/smart_grid_dataset.csv"  # ← EDIT THIS LINE
 
 df = None
 
